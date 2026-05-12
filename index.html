@@ -1,921 +1,495 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="es-UY">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXON Intelligence | Soberanía Digital Uruguay</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --neon: #00ff41;
-            --neon-dim: rgba(0, 255, 65, 0.15);
-            --dark: #050505;
-            --darker: #0a0a0a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--dark); 
-            color: #e5e5e5; 
-            overflow-x: hidden;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--dark); }
-        ::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(0, 255, 65, 0.4); }
-        }
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100vh); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
-
-        .animate-fadeInUp {
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .animate-fadeIn {
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
-        }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-
-        .neon-text { 
-            color: var(--neon); 
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5), 0 0 20px rgba(0, 255, 65, 0.3); 
-        }
-        .neon-border { 
-            border: 1px solid rgba(0, 255, 65, 0.3); 
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1), inset 0 0 15px rgba(0, 255, 65, 0.05); 
-        }
-        .neon-border-hover:hover {
-            border-color: var(--neon);
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), inset 0 0 20px rgba(0, 255, 65, 0.1);
-        }
-        .neon-glow {
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.15);
-        }
-
-        .bg-grid {
-            background-image: 
-                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        .scanline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon), transparent);
-            opacity: 0.3;
-            animation: scanline 4s linear infinite;
-            pointer-events: none;
-        }
-
-        .glass {
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .service-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.05), transparent);
-            transition: left 0.6s ease;
-        }
-        .service-card:hover::before {
-            left: 100%;
-        }
-        .service-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--neon);
-            box-shadow: 0 20px 40px rgba(0, 255, 65, 0.1);
-        }
-
-        .btn-primary {
-            background: var(--neon);
-            color: #000;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-        .btn-primary:hover {
-            background: #00cc33;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
-            transform: scale(1.02);
-        }
-
-        .btn-secondary {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover {
-            border-color: var(--neon);
-            color: var(--neon);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.15);
-        }
-
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon), transparent);
-            opacity: 0.3;
-        }
-
-        .counter-value {
-            font-variant-numeric: tabular-nums;
-        }
-
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        .quote-mark {
-            font-size: 6rem;
-            line-height: 1;
-            color: var(--neon);
-            opacity: 0.2;
-            font-family: serif;
-        }
-
-        .float-element {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            background: var(--neon);
-            z-index: 9999;
-            transition: width 0.1s ease;
-        }
-
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.03;
-            z-index: 9998;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        .form-input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-        .form-input:focus {
-            border-color: var(--neon);
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
-            outline: none;
-        }
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Form success/error messages */
-        .form-message {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 1rem 1.5rem;
-            border-radius: 4px;
-            z-index: 10000;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.4s ease;
-        }
-        .form-message.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        .form-message.success {
-            background: rgba(0, 255, 65, 0.1);
-            border: 1px solid var(--neon);
-            color: var(--neon);
-        }
-        .form-message.error {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff4444;
-            color: #ff4444;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem !important; }
-            .section-title { font-size: 2rem !important; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AXON Intelligence: Soberanía Digital e IA local para modernizar el Estado y las organizaciones en Uruguay. Auditoría algorítmica, #UruguayPapelCero y Nodos IA on‑prem." />
+  <title>AXON Intelligence | Soberanía Digital Uruguay</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --card:#0f1620; --muted:#9fb0c2; --text:#eaf2ff;
+      --accent:#79ffa8; --accent2:#7cc4ff; --border:rgba(255,255,255,.08);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius:16px; --max:1120px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:
+      radial-gradient(1200px 600px at 15% 0%, rgba(121,255,168,.10), transparent 60%),
+      radial-gradient(1000px 600px at 80% 10%, rgba(124,196,255,.12), transparent 60%),
+      var(--bg);color:var(--text);line-height:1.5}
+    a{color:inherit}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;background:rgba(11,15,20,.72);backdrop-filter: blur(10px);border-bottom:1px solid var(--border);z-index:10}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.4px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+    nav a{opacity:.9;text-decoration:none;margin-left:14px;font-size:14px;color:var(--muted)}
+    nav a:hover{color:var(--text)}
+    section{padding:56px 0;border-bottom:1px solid var(--border)}
+    .hero{padding:64px 0 56px}
+    .grid{display:grid;gap:18px}
+    .heroGrid{grid-template-columns: 1.2fr .8fr;align-items:start}
+    @media (max-width: 920px){.heroGrid{grid-template-columns:1fr}}
+    h1{font-size:44px;line-height:1.08;margin:0 0 14px;letter-spacing:-.6px}
+    h2{font-size:28px;margin:0 0 14px;letter-spacing:-.2px}
+    h3{font-size:18px;margin:0 0 10px}
+    p{margin:0 0 12px;color:rgba(234,242,255,.92)}
+    .muted{color:var(--muted)}
+    .card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card.pad{padding:18px}
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media (max-width: 520px){.kpis{grid-template-columns:1fr}}
+    .kpi{padding:14px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.02)}
+    .kpi .num{font-size:18px;font-weight:700}
+    .kpi .lab{font-size:12px;color:var(--muted)}
+    .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);text-decoration:none;font-weight:650}
+    .btn.primary{background:linear-gradient(135deg, rgba(121,255,168,.20), rgba(124,196,255,.15));border-color:rgba(121,255,168,.25)}
+    .btn.secondary{background:rgba(255,255,255,.03);color:var(--text)}
+    .btn.ghost{background:transparent;color:var(--muted)}
+    .btn:hover{transform: translateY(-1px)}
+    .tagRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{font-size:12px;color:var(--muted);border:1px solid var(--border);background:rgba(255,255,255,.02);padding:7px 10px;border-radius:999px}
+    .cols3{grid-template-columns:repeat(3,1fr)}
+    @media (max-width: 920px){.cols3{grid-template-columns:1fr}}
+    .cols2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width: 920px){.cols2{grid-template-columns:1fr}}
+    ul{margin:10px 0 0;padding-left:18px;color:rgba(234,242,255,.90)}
+    li{margin:6px 0}
+    .quote{padding:18px;border-left:3px solid rgba(121,255,168,.55);background:rgba(255,255,255,.02);border-radius:14px}
+    .footer{padding:32px 0}
+    .small{font-size:12px;color:var(--muted)}
+    .split{display:grid;grid-template-columns: 1fr 1fr;gap:18px}
+    @media (max-width: 920px){.split{grid-template-columns:1fr}}
+    .hr{height:1px;background:var(--border);margin:14px 0}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
 </head>
-<body class="bg-gradient">
-    <div class="scroll-progress" id="scrollProgress"></div>
-    <div class="noise-overlay"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 border border-[#00ff41]/50 flex items-center justify-center">
-                    <i class="fas fa-brain text-[#00ff41] text-lg"></i>
-                </div>
-                <div class="text-xl font-black tracking-tighter">
-                    <span class="neon-text">AXON</span> <span class="text-white">INTELLIGENCE</span>
-                </div>
-            </div>
-            <div class="hidden md:flex items-center space-x-8 text-sm uppercase tracking-widest font-semibold">
-                <a href="#vision" class="hover:text-[#00ff41] transition-colors duration-300">Visión</a>
-                <a href="#servicios" class="hover:text-[#00ff41] transition-colors duration-300">Servicios</a>
-                <a href="#manifiesto" class="hover:text-[#00ff41] transition-colors duration-300">Manifiesto</a>
-                <a href="#contacto" class="hover:text-[#00ff41] transition-colors duration-300">Contacto</a>
-            </div>
-            <button id="mobileMenuBtn" class="md:hidden text-white hover:text-[#00ff41] transition">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
-    </nav>
+<body>
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">
+        <span class="mono">AXON</span>
+        <span class="pill">Agencia de Soberanía Digital</span>
+      </div>
 
-    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-[#0a0a0a] border-l border-[#00ff41]/20 z-50 p-8">
-        <button id="closeMobileMenu" class="absolute top-6 right-6 text-white hover:text-[#00ff41]">
-            <i class="fas fa-times text-2xl"></i>
-        </button>
-        <div class="flex flex-col gap-8 mt-16 text-lg uppercase tracking-widest font-semibold">
-            <a href="#vision" class="hover:text-[#00ff41] transition-colors mobile-link">Visión</a>
-            <a href="#servicios" class="hover:text-[#00ff41] transition-colors mobile-link">Servicios</a>
-            <a href="#manifiesto" class="hover:text-[#00ff41] transition-colors mobile-link">Manifiesto</a>
-            <a href="#contacto" class="hover:text-[#00ff41] transition-colors mobile-link">Contacto</a>
-        </div>
-        <div class="mt-12 pt-8 border-t border-white/10">
-            <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Conecte con nosotros</p>
-            <div class="flex gap-4">
-                <a href="https://www.x.com/AXONInteluy" target="_blank" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/cristian-silva-871576376" target="_blank" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://www.instagram.com/axonintel.uy" target="_blank" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </div>
-        </div>
+      <nav aria-label="Navegación">
+        <a href="#para-quien">Para quién</a>
+        <a href="#soluciones">Soluciones</a>
+        <a href="#piloto">Piloto</a>
+        <a href="#partners">Partners</a>
+        <a href="#prensa">Prensa</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
     </div>
-    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+  </div>
+</header>
 
-    <!-- Hero Section -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden scanline">
-        <div class="absolute inset-0 bg-grid opacity-50"></div>
-        <div class="absolute top-20 left-10 w-32 h-32 border border-[#00ff41]/10 rounded-full float-element" style="animation-delay: 0s;"></div>
-        <div class="absolute bottom-32 right-20 w-48 h-48 border border-[#00ff41]/10 rounded-full float-element" style="animation-delay: 2s;"></div>
-        <div class="absolute top-1/3 right-1/4 w-2 h-2 bg-[#00ff41] rounded-full float-element" style="animation-delay: 1s;"></div>
-        <div class="absolute bottom-1/4 left-1/3 w-3 h-3 bg-[#00ff41]/50 rounded-full float-element" style="animation-delay: 3s;"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00ff41]/5 rounded-full blur-3xl"></div>
+<main>
 
-        <div class="relative z-10 text-center max-w-5xl mx-auto px-6 pt-20">
-            <div class="animate-fadeIn mb-8">
-                <span class="inline-flex items-center gap-2 px-4 py-2 border border-[#00ff41]/30 text-[#00ff41] text-xs uppercase tracking-[0.3em] font-semibold">
-                    <span class="w-2 h-2 bg-[#00ff41] rounded-full animate-pulse"></span>
-                    Agencia de Soberanía Digital
-                </span>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <div class="grid heroGrid">
+        <div>
+          <h1>Soberanía Digital e IA local para modernizar Uruguay (sin sacar datos del país)</h1>
+          <p class="muted">
+            Implementamos infraestructura de inteligencia artificial en servidores propios para
+            <strong>auditar gestión</strong>, <strong>acelerar trámites</strong> y ejecutar <strong>#UruguayPapelCero</strong>
+            con trazabilidad, control y seguridad por diseño.
+          </p>
+
+          <div class="btns">
+            <a class="btn primary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">
+              Agendar reunión (15 min)
+            </a>
+            <a class="btn secondary" href="https://drive.google.com/file/d/162tJqvFZf0T2kx3X9X3msDMlava1FElK/view?usp=sharing" target="_blank" rel="noopener">
+              Descargar Dossier Institucional (PDF)
+            </a>
+            <a class="btn ghost" href="https://drive.google.com/file/d/1oDoZEul-mR4oC8OPXX4KVqVEZy5tc4Tc/view?usp=drive_link" target="_blank" rel="noopener">
+              Kit de Prensa
+            </a>
+            <a class="btn ghost" href="#partners">
+              Quiero ser partner técnico
+            </a>
+          </div>
+
+          <div class="tagRow" aria-label="Diferenciadores">
+            <span class="tag">Procesamiento local (on‑prem)</span>
+            <span class="tag">RAG + normativa uruguaya</span>
+            <span class="tag">Auditoría y trazabilidad</span>
+            <span class="tag">Seguridad y control de acceso</span>
+          </div>
+        </div>
+
+        <aside class="card pad">
+          <h3>Indicadores operativos</h3>
+          <p class="muted">Lo que defendemos no es solo tecnología: es control y eficiencia medible.</p>
+          <div class="kpis" role="list">
+            <div class="kpi" role="listitem">
+              <div class="num">Arquitectura local</div>
+              <div class="lab">Diseñada para operar con datos en Uruguay</div>
             </div>
-            <h1 class="hero-title text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8 animate-fadeInUp delay-1">
-                Soberanía Digital<br>para un <span class="neon-text">Uruguay Eficiente</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed animate-fadeInUp delay-2">
-                Implementamos la primera infraestructura de Inteligencia Artificial de ejecución local diseñada para auditar la gestión pública y ejecutar el proyecto <span class="text-white font-bold">#UruguayPapelCero</span>.
+            <div class="kpi" role="listitem">
+              <div class="num">24/7</div>
+              <div class="lab">Operación y monitoreo</div>
+            </div>
+            <div class="kpi" role="listitem">
+              <div class="num">Cifrado</div>
+              <div class="lab">En tránsito y en reposo (según implementación)</div>
+            </div>
+            <div class="kpi" role="listitem">
+              <div class="num">Trazabilidad</div>
+              <div class="lab">Registro de consultas, fuentes y evidencia</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="quote">
+            <p style="margin:0">
+              “La eficiencia administrativa no es un objetivo técnico, es un derecho fundamental del ciudadano.
+              En AXON, construimos el puente entre la ley y la ejecución.”
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fadeInUp delay-3">
-                <a href="#contacto" class="btn-primary py-4 px-8 rounded-sm uppercase tracking-tighter text-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-paper-plane"></i>
-                    Solicitar Demo Técnica
-                </a>
-                <a href="AXON_INTELLIGENCE_Dossier.pdf" download class="btn-secondary py-4 px-8 rounded-sm uppercase tracking-tighter text-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-file-pdf"></i>
-                    Dossier Institucional
-                </a>
-            </div>
-            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fadeIn delay-4">
-                <div class="text-center">
-                    <div class="text-3xl md:text-4xl font-black neon-text counter-value" data-target="100">0</div>
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mt-2">% Local</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl md:text-4xl font-black neon-text counter-value" data-target="64">0</div>
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mt-2">Cuerpos Legales</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl md:text-4xl font-black neon-text counter-value" data-target="24">0</div>
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mt-2">/7 Operativo</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl md:text-4xl font-black neon-text counter-value" data-target="0">0</div>
-                    <div class="text-xs uppercase tracking-widest text-gray-500 mt-2">Datos Fuera</div>
-                </div>
-            </div>
-            <div class="mt-16 animate-fadeIn delay-5">
-                <a href="#vision" class="inline-flex flex-col items-center gap-2 text-gray-500 hover:text-[#00ff41] transition-colors">
-                    <span class="text-xs uppercase tracking-widest">Descubra más</span>
-                    <i class="fas fa-chevron-down animate-bounce"></i>
-                </a>
-            </div>
+            <p class="small" style="margin-top:10px">— Manifiesto AXON Intelligence</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section id="para-quien">
+    <div class="wrap">
+      <h2>Rutas claras para cuatro públicos</h2>
+      <p class="muted">Una propuesta, cuatro entradas: institución, empresa, partner técnico y prensa/inversión.</p>
+
+      <div class="grid cols3" style="margin-top:16px">
+        <div class="card pad">
+          <h3>Organismos públicos</h3>
+          <p class="muted">Menos papel, menos espera, más control.</p>
+          <ul>
+            <li>Auditoría de procesos y normativa para detectar cuellos de botella.</li>
+            <li>Digitalización inteligente con búsqueda en lenguaje natural.</li>
+            <li>Datos soberanos: operación local y gobernanza institucional.</li>
+          </ul>
+          <div class="btns">
+            <a class="btn secondary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Reunión institucional</a>
+            <a class="btn ghost" href="https://drive.google.com/file/d/162tJqvFZf0T2kx3X9X3msDMlava1FElK/view?usp=sharing" target="_blank" rel="noopener">Ver dossier</a>
+          </div>
         </div>
-    </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Vision Section -->
-    <section id="vision" class="relative py-24 md:py-32 overflow-hidden">
-        <div class="absolute inset-0 bg-grid opacity-30"></div>
-        <div class="max-w-6xl mx-auto px-6 relative z-10">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="reveal-on-scroll">
-                    <span class="text-[#00ff41] text-xs uppercase tracking-[0.3em] font-semibold mb-4 block">
-                        <i class="fas fa-eye mr-2"></i>Sobre Nosotros
-                    </span>
-                    <h2 class="section-title text-4xl md:text-5xl font-black mb-8 leading-tight">
-                        El Despertar de<br>la <span class="neon-text">Eficiencia</span>
-                    </h2>
-                    <div class="space-y-6 text-gray-400 leading-relaxed">
-                        <p class="text-lg">
-                            AXON Intelligence nace en <span class="text-white font-semibold">Rivera</span> con una misión clara: <span class="text-[#00ff41]">jubilar la burocracia analógica</span>. Creemos que la soberanía no solo se defiende en las fronteras, sino en el control de nuestros propios datos.
-                        </p>
-                        <p>
-                            Nuestra agencia desarrolla nodos de inteligencia artificial que procesan la normativa nacional en servidores propios, garantizando que la información del Estado uruguayo <span class="text-white font-semibold">nunca salga del país</span>.
-                        </p>
-                        <p class="text-white font-semibold border-l-2 border-[#00ff41] pl-4">
-                            No somos solo tecnología; somos el motor de transparencia que el siglo XXI exige.
-                        </p>
-                    </div>
-                    <div class="mt-10 grid grid-cols-3 gap-4">
-                        <div class="text-center p-4 border border-white/10 hover:border-[#00ff41]/30 transition-colors">
-                            <i class="fas fa-shield-alt text-[#00ff41] text-2xl mb-2"></i>
-                            <div class="text-xs uppercase tracking-widest text-gray-500">Soberanía</div>
-                        </div>
-                        <div class="text-center p-4 border border-white/10 hover:border-[#00ff41]/30 transition-colors">
-                            <i class="fas fa-microchip text-[#00ff41] text-2xl mb-2"></i>
-                            <div class="text-xs uppercase tracking-widest text-gray-500">IA Local</div>
-                        </div>
-                        <div class="text-center p-4 border border-white/10 hover:border-[#00ff41]/30 transition-colors">
-                            <i class="fas fa-landmark text-[#00ff41] text-2xl mb-2"></i>
-                            <div class="text-xs uppercase tracking-widest text-gray-500">Estado</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="reveal-on-scroll relative">
-                    <div class="relative aspect-square max-w-md mx-auto">
-                        <div class="absolute inset-0 border border-[#00ff41]/20 rounded-full animate-pulse" style="animation-duration: 4s;"></div>
-                        <div class="absolute inset-4 border border-[#00ff41]/15 rounded-full" style="animation: pulse 5s infinite;"></div>
-                        <div class="absolute inset-8 border border-[#00ff41]/10 rounded-full" style="animation: pulse 6s infinite;"></div>
-                        <div class="absolute inset-12 border border-[#00ff41]/5 rounded-full" style="animation: pulse 7s infinite;"></div>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-24 h-24 border-2 border-[#00ff41] rounded-full flex items-center justify-center bg-[#00ff41]/5">
-                                <i class="fas fa-fingerprint text-[#00ff41] text-4xl"></i>
-                            </div>
-                        </div>
-                        <div class="absolute inset-0" style="animation: spin 20s linear infinite;">
-                            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#00ff41] rounded-full shadow-lg shadow-[#00ff41]/50"></div>
-                        </div>
-                        <div class="absolute inset-0" style="animation: spin 15s linear infinite reverse;">
-                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#00ff41]/70 rounded-full"></div>
-                        </div>
-                    </div>
-                    <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 glass px-6 py-3 border border-[#00ff41]/20">
-                        <div class="flex items-center gap-2 text-sm">
-                            <i class="fas fa-map-marker-alt text-[#00ff41]"></i>
-                            <span class="text-white font-semibold">Rivera, Uruguay</span>
-                            <span class="text-gray-500">|</span>
-                            <span class="text-gray-400">Operaciones Nacionales</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="card pad">
+          <h3>Empresas privadas</h3>
+          <p class="muted">Eficiencia operativa y cumplimiento, con IA controlada.</p>
+          <ul>
+            <li>Automatización documental (contratos, expedientes, archivos).</li>
+            <li>Asistentes internos basados en conocimiento propio (RAG).</li>
+            <li>Implementación on‑prem / híbrida según exigencias.</li>
+          </ul>
+          <div class="btns">
+            <a class="btn secondary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Reunión con dirección/operaciones</a>
+            <a class="btn ghost" href="#contacto">Solicitar demo técnica</a>
+          </div>
         </div>
-    </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Services Section -->
-    <section id="servicios" class="relative py-24 md:py-32 overflow-hidden">
-        <div class="absolute inset-0 bg-grid opacity-20"></div>
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16 reveal-on-scroll">
-                <span class="text-[#00ff41] text-xs uppercase tracking-[0.3em] font-semibold mb-4 block">
-                    <i class="fas fa-cogs mr-2"></i>Capacidades Operativas
-                </span>
-                <h2 class="section-title text-4xl md:text-5xl font-black mb-6">
-                    Servicios y <span class="neon-text">Pilares Técnicos</span>
-                </h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">
-                    Tres líneas de acción estratégicas para la transformación digital del Estado uruguayo.
-                </p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="service-card glass p-8 border border-white/10 reveal-on-scroll">
-                    <div class="w-14 h-14 border border-[#00ff41]/30 flex items-center justify-center mb-6">
-                        <i class="fas fa-search-dollar text-[#00ff41] text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Auditoría Algorítmica de Gestión</h3>
-                    <p class="text-gray-400 leading-relaxed mb-6">
-                        Procesamos masivamente el <span class="text-white">TOCAF</span>, la <span class="text-white">Ley 19.355</span> y normativas departamentales para identificar cuellos de botella administrativos. AXON detecta ineficiencias antes de que se conviertan en costos.
-                    </p>
-                    <div class="flex items-center gap-2 text-[#00ff41] text-sm uppercase tracking-wider">
-                        <span>Sistema SAA</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                <div class="service-card glass p-8 border border-white/10 reveal-on-scroll" style="transition-delay: 0.1s;">
-                    <div class="w-14 h-14 border border-[#00ff41]/30 flex items-center justify-center mb-6">
-                        <i class="fas fa-file-alt text-[#00ff41] text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Protocolo #UruguayPapelCero</h3>
-                    <p class="text-gray-400 leading-relaxed mb-6">
-                        Digitalización inteligente de archivos físicos. No solo escaneamos; transformamos documentos históricos y administrativos en <span class="text-white">bases de datos vectoriales</span> consultables en lenguaje natural.
-                    </p>
-                    <div class="flex items-center gap-2 text-[#00ff41] text-sm uppercase tracking-wider">
-                        <span>Vectorización IA</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                <div class="service-card glass p-8 border border-white/10 reveal-on-scroll" style="transition-delay: 0.2s;">
-                    <div class="w-14 h-14 border border-[#00ff41]/30 flex items-center justify-center mb-6">
-                        <i class="fas fa-globe-americas text-[#00ff41] text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Consultoría de Frontera (ACIR)</h3>
-                    <p class="text-gray-400 leading-relaxed mb-6">
-                        Soluciones específicas para los desafíos del comercio y la normativa binacional, optimizando la operativa de las organizaciones en <span class="text-white">puntos estratégicos</span> del país.
-                    </p>
-                    <div class="flex items-center gap-2 text-[#00ff41] text-sm uppercase tracking-wider">
-                        <span>Zonas Francas</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-16 glass border border-white/10 p-6 reveal-on-scroll">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                    <div>
-                        <div class="text-2xl font-black neon-text mb-1">Ollama</div>
-                        <div class="text-xs uppercase tracking-widest text-gray-500">Motor LLM</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-black neon-text mb-1">Local</div>
-                        <div class="text-xs uppercase tracking-widest text-gray-500">Procesamiento</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-black neon-text mb-1">RAG</div>
-                        <div class="text-xs uppercase tracking-widest text-gray-500">Arquitectura</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-black neon-text mb-1">256-bit</div>
-                        <div class="text-xs uppercase tracking-widest text-gray-500">Encriptación</div>
-                    </div>
-                </div>
-            </div>
+        <div class="card pad">
+          <h3>Partners técnicos</h3>
+          <p class="muted">Buscamos integradores y especialistas para escalar impacto.</p>
+          <ul>
+            <li>Integración, infraestructura, ciberseguridad, MLOps y data.</li>
+            <li>Proyectos on‑prem para sector público y privado.</li>
+            <li>Co‑delivery, soporte y alianzas comerciales.</li>
+          </ul>
+          <div class="btns">
+            <a class="btn primary" href="#partners">Sumarme como partner</a>
+            <a class="btn ghost" href="#soluciones">Ver soluciones</a>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Manifesto Section -->
-    <section id="manifiesto" class="relative py-24 md:py-32 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-[#00ff41]/5 to-transparent"></div>
-        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center reveal-on-scroll">
-            <div class="quote-mark mb-4">"</div>
-            <blockquote class="text-2xl md:text-4xl font-light italic leading-relaxed mb-8">
-                La eficiencia administrativa no es un objetivo técnico, es un <span class="text-white font-bold">derecho fundamental</span> del ciudadano. En AXON, construimos el puente entre <span class="neon-text">la ley</span> y la <span class="neon-text">ejecución instantánea</span>.
-            </blockquote>
-            <div class="flex items-center justify-center gap-4 mt-12">
-                <div class="h-px w-16 bg-[#00ff41]/30"></div>
-                <div class="text-[#00ff41] uppercase tracking-[0.3em] font-bold text-sm">
-                    Manifiesto AXON Intelligence
-                </div>
-                <div class="h-px w-16 bg-[#00ff41]/30"></div>
-            </div>
-            <p class="mt-6 text-gray-500 uppercase tracking-[0.2em] text-sm">
-                Desde Rivera para todo el territorio nacional
-            </p>
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <h2>AXON Intelligence: el despertar de la eficiencia</h2>
+          <p class="muted">
+            AXON nace en Rivera con una misión clara: jubilar la burocracia analógica.
+            Creemos que la soberanía no solo se defiende en las fronteras, sino en el control de nuestros propios datos.
+          </p>
+          <p class="muted">
+            Desarrollamos nodos de inteligencia artificial que procesan normativa y documentación en servidores propios,
+            garantizando que la información sensible pueda permanecer bajo gobernanza institucional.
+          </p>
+          <div class="tagRow">
+            <span class="tag">Rivera-Montevideo, Uruguay</span>
+            <span class="tag">Operaciones nacionales</span>
+            <span class="tag">Gobernanza de datos</span>
+          </div>
         </div>
-    </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Contact Section -->
-    <section id="contacto" class="relative py-24 md:py-32 overflow-hidden">
-        <div class="absolute inset-0 bg-grid opacity-20"></div>
-        <div class="max-w-5xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16 reveal-on-scroll">
-                <span class="text-[#00ff41] text-xs uppercase tracking-[0.3em] font-semibold mb-4 block">
-                    <i class="fas fa-satellite-dish mr-2"></i>Comunicaciones
-                </span>
-                <h2 class="section-title text-4xl md:text-5xl font-black mb-6">
-                    Contacto <span class="neon-text">Institucional</span>
-                </h2>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="reveal-on-scroll">
-                    <div class="glass border border-white/10 p-8 mb-8">
-                        <h3 class="text-lg font-bold mb-6 text-white uppercase tracking-wider">
-                            <i class="fas fa-building mr-2 text-[#00ff41]"></i>Sede Central
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 border border-[#00ff41]/20 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-map-marker-alt text-[#00ff41]"></i>
-                                </div>
-                                <div>
-                                    <div class="text-white font-semibold">Uruguay</div>
-                                    <div class="text-gray-400 text-sm">Operaciones: Montevideo | Nivel Nacional</div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 border border-[#00ff41]/20 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-envelope text-[#00ff41]"></i>
-                                </div>
-                                <div>
-                                    <div class="text-white font-semibold">Correo Oficial</div>
-                                    <a href="mailto:axonnintelligence@gmail.com" class="text-[#00ff41] hover:text-white transition-colors text-sm">
-                                        axonnintelligence@gmail.com
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 border border-[#00ff41]/20 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-globe text-[#00ff41]"></i>
-                                </div>
-                                <div>
-                                    <div class="text-white font-semibold">Web Institucional</div>
-                                    <div class="text-gray-400 text-sm">axonintelligence.uy</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="glass border border-white/10 p-8">
-                        <h3 class="text-lg font-bold mb-6 text-white uppercase tracking-wider">
-                            <i class="fas fa-share-nodes mr-2 text-[#00ff41]"></i>Redes Oficiales
-                        </h3>
-                        <div class="grid grid-cols-3 gap-4">
-                            <a href="https://www.x.com/AXONInteluy" target="_blank" rel="noopener noreferrer" 
-                               class="group flex flex-col items-center gap-3 p-4 border border-white/10 hover:border-[#00ff41] transition-all hover:bg-[#00ff41]/5">
-                                <i class="fab fa-x-twitter text-2xl text-gray-400 group-hover:text-[#00ff41] transition-colors"></i>
-                                <span class="text-xs uppercase tracking-wider text-gray-500 group-hover:text-white transition-colors">X</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/cristian-silva-871576376" target="_blank" rel="noopener noreferrer"
-                               class="group flex flex-col items-center gap-3 p-4 border border-white/10 hover:border-[#00ff41] transition-all hover:bg-[#00ff41]/5">
-                                <i class="fab fa-linkedin-in text-2xl text-gray-400 group-hover:text-[#00ff41] transition-colors"></i>
-                                <span class="text-xs uppercase tracking-wider text-gray-500 group-hover:text-white transition-colors">LinkedIn</span>
-                            </a>
-                            <a href="https://www.instagram.com/axonintel.uy" target="_blank" rel="noopener noreferrer"
-                               class="group flex flex-col items-center gap-3 p-4 border border-white/10 hover:border-[#00ff41] transition-all hover:bg-[#00ff41]/5">
-                                <i class="fab fa-instagram text-2xl text-gray-400 group-hover:text-[#00ff41] transition-colors"></i>
-                                <span class="text-xs uppercase tracking-wider text-gray-500 group-hover:text-white transition-colors">Instagram</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WEB3FORMS CONTACT FORM -->
-                <div class="reveal-on-scroll">
-                    <div class="glass border border-white/10 p-8">
-                        <h3 class="text-lg font-bold mb-6 text-white uppercase tracking-wider">
-                            <i class="fas fa-paper-plane mr-2 text-[#00ff41]"></i>Canal Directo
-                        </h3>
-
-                        <!-- IMPORTANTE: Reemplazar TU_ACCESS_KEY con tu key de Web3Forms -->
-                        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-                            <!-- Access Key de Web3Forms -->
-                            <input type="hidden" name="access_key" value="d30bc039-7fdb-4c32-b42d-19a0d547c8ca">
-
-                            <!-- Honeypot Spam Protection -->
-                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-
-                            <!-- Subject personalizado -->
-                            <input type="hidden" name="subject" value="Nuevo contacto desde AXON Intelligence Web">
-
-                            <!-- From name -->
-                            <input type="hidden" name="from_name" value="AXON Intelligence Website">
-
-                            <div class="space-y-6">
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Institución / Entidad</label>
-                                    <input type="text" name="institucion" required
-                                           class="w-full form-input px-4 py-3"
-                                           placeholder="Nombre de la organización">
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Nombre Completo</label>
-                                    <input type="text" name="name" required
-                                           class="w-full form-input px-4 py-3"
-                                           placeholder="Su nombre">
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Correo Electrónico</label>
-                                    <input type="email" name="email" required
-                                           class="w-full form-input px-4 py-3"
-                                           placeholder="contacto@entidad.gub.uy">
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Tipo de Consulta</label>
-                                    <select name="tipo_consulta" required
-                                            class="w-full form-input px-4 py-3">
-                                        <option value="" class="bg-[#0a0a0a]">Seleccione una opción</option>
-                                        <option value="demo" class="bg-[#0a0a0a]">Solicitar Demo Técnica</option>
-                                        <option value="auditoria" class="bg-[#0a0a0a]">Auditoría Algorítmica</option>
-                                        <option value="papelcero" class="bg-[#0a0a0a]">Protocolo #UruguayPapelCero</option>
-                                        <option value="frontera" class="bg-[#0a0a0a]">Consultoría de Frontera</option>
-                                        <option value="otro" class="bg-[#0a0a0a]">Otra consulta institucional</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Mensaje</label>
-                                    <textarea name="message" required rows="4"
-                                              class="w-full form-input px-4 py-3 resize-none"
-                                              placeholder="Describa su requerimiento operativo..."></textarea>
-                                </div>
-                                <button type="submit" 
-                                        class="w-full btn-primary py-4 px-8 rounded-sm uppercase tracking-tighter text-sm flex items-center justify-center gap-2">
-                                    <i class="fas fa-lock"></i>
-                                    Enviar Comunicación Oficial
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div class="card pad">
+          <h3>Qué entregamos (en simple)</h3>
+          <ul>
+            <li><strong>Evidencia</strong>: fuentes, trazabilidad y reportes ejecutivos.</li>
+            <li><strong>Velocidad</strong>: menos fricción en trámites y consultas.</li>
+            <li><strong>Control</strong>: operación local, roles y auditoría.</li>
+            <li><strong>Escalabilidad</strong>: de piloto a despliegue nacional.</li>
+          </ul>
+          <p class="small" style="margin-top:10px">
+            Nota: Alcances exactos (on‑prem, 24/7, cifrado, etc.) se confirman en el diseño de arquitectura y el acuerdo de implementación.
+          </p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <div class="section-divider"></div>
+  <!-- SOLUCIONES -->
+  <section id="soluciones">
+    <div class="wrap">
+      <h2>Tres soluciones “comprables”</h2>
+      <p class="muted">Paquetes claros para decisión ejecutiva + profundidad técnica para IT.</p>
 
-    <!-- Footer -->
-    <footer class="relative py-12 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 border border-[#00ff41]/50 flex items-center justify-center">
-                        <i class="fas fa-brain text-[#00ff41] text-sm"></i>
-                    </div>
-                    <div class="text-lg font-black tracking-tighter">
-                        <span class="neon-text">AXON</span> <span class="text-white">INTELLIGENCE</span>
-                    </div>
-                </div>
-                <div class="text-center md:text-right">
-                    <p class="text-gray-500 text-sm">
-                        © 2026 AXON Intelligence | Rivera - Montevideo
-                    </p>
-                    <p class="text-gray-600 text-xs mt-1 uppercase tracking-widest">
-                        Soberanía Digital para la República Oriental del Uruguay
-                    </p>
-                </div>
-                <div class="flex gap-4">
-                    <a href="https://www.x.com/AXONInteluy" target="_blank" rel="noopener noreferrer"
-                       class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition-all">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/cristian-silva-871576376" target="_blank" rel="noopener noreferrer"
-                       class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition-all">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://www.instagram.com/axonintel.uy" target="_blank" rel="noopener noreferrer"
-                       class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#00ff41] hover:text-[#00ff41] transition-all">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600 uppercase tracking-widest">
-                <div class="flex gap-6">
-                    <span class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 bg-[#00ff41] rounded-full animate-pulse"></span>
-                        Sistema Operativo
-                    </span>
-                    <span>Infraestructura Local</span>
-                    <span>Datos en Territorio Nacional</span>
-                </div>
-                <div>
-                    <a href="AXON_INTELLIGENCE_Dossier.pdf" download class="hover:text-[#00ff41] transition-colors">
-                        <i class="fas fa-download mr-1"></i>Descargar Dossier Técnico
-                    </a>
-                </div>
-            </div>
+      <div class="grid cols3" style="margin-top:16px">
+        <div class="card pad">
+          <h3>1) Auditoría Algorítmica de Gestión</h3>
+          <p class="muted">Detecta ineficiencias antes de que se conviertan en costos.</p>
+          <ul>
+            <li>Mapeo de procesos y normativa aplicable.</li>
+            <li>Identificación de cuellos de botella y riesgos de cumplimiento.</li>
+            <li>Informe ejecutivo con oportunidades y priorización.</li>
+          </ul>
+          <div class="tagRow">
+            <span class="tag">Transparencia</span><span class="tag">Cumplimiento</span><span class="tag">Eficiencia</span>
+          </div>
         </div>
-    </footer>
 
-    <!-- Form Message Container -->
-    <div id="formMessage" class="form-message"></div>
+        <div class="card pad">
+          <h3>2) Protocolo #UruguayPapelCero</h3>
+          <p class="muted">De archivos físicos a conocimiento consultable en segundos.</p>
+          <ul>
+            <li>Digitalización inteligente: estructura + búsqueda.</li>
+            <li>Vectorización y base documental consultable en lenguaje natural.</li>
+            <li>Controles de acceso, clasificación y trazabilidad.</li>
+          </ul>
+          <div class="tagRow">
+            <span class="tag">Gestión documental</span><span class="tag">Búsqueda semántica</span><span class="tag">Evidencia</span>
+          </div>
+        </div>
 
-    <script>
-        // Scroll Progress Bar
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (scrollTop / scrollHeight) * 100;
-            document.getElementById('scrollProgress').style.width = scrolled + '%';
-        });
+        <div class="card pad">
+          <h3>3) Nodo IA Local (RAG on‑prem)</h3>
+          <p class="muted">Infraestructura de IA para conocimiento interno con control institucional.</p>
+          <ul>
+            <li>Despliegue en servidores propios / entorno controlado.</li>
+            <li>RAG con fuentes institucionales (normativa y documentación).</li>
+            <li>Observabilidad: logs, métricas y gobierno de fuentes.</li>
+          </ul>
+          <div class="tagRow">
+            <span class="tag">On‑prem</span><span class="tag">RAG</span><span class="tag">Seguridad</span>
+          </div>
+        </div>
+      </div>
 
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenuBtn = document.getElementById('closeMobileMenu');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+      <div class="card pad" style="margin-top:18px">
+        <h3>Consultoría de Frontera (ACIR)</h3>
+        <p class="muted">
+          Soluciones específicas para desafíos de comercio y normativa binacional, optimizando la operativa de organizaciones en puntos estratégicos del país.
+        </p>
+      </div>
+    </div>
+  </section>
 
-        function openMobileMenu() {
-            mobileMenu.classList.add('active');
-            mobileOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMobileMenuFn() {
-            mobileMenu.classList.remove('active');
-            mobileOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-        mobileMenuBtn.addEventListener('click', openMobileMenu);
-        closeMobileMenuBtn.addEventListener('click', closeMobileMenuFn);
-        mobileOverlay.addEventListener('click', closeMobileMenuFn);
-        mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenuFn));
+  <!-- PILOTO -->
+  <section id="piloto">
+    <div class="wrap">
+      <h2>Cómo empezamos: piloto con entregables</h2>
+      <p class="muted">Reducimos fricción y dejamos evidencia para decisión: escalar o ajustar.</p>
 
-        // Scroll Reveal Animation
-        const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        revealElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            revealObserver.observe(el);
-        });
+      <div class="grid cols2" style="margin-top:16px">
+        <div class="card pad">
+          <h3>Piloto (30 días) — ejemplo de plan</h3>
+          <ul>
+            <li><strong>Semana 1:</strong> alcance, fuentes, permisos, arquitectura y riesgos.</li>
+            <li><strong>Semana 2:</strong> ingesta documental + normalización + pruebas de calidad.</li>
+            <li><strong>Semana 3:</strong> asistente RAG + trazabilidad y evidencia.</li>
+            <li><strong>Semana 4:</strong> informe ejecutivo + roadmap de escalamiento.</li>
+          </ul>
+          <p class="small" style="margin-top:10px">Ajustable según institución, volumen documental y controles requeridos.</p>
+        </div>
 
-        // Counter Animation
-        const counters = document.querySelectorAll('.counter-value');
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const target = parseInt(entry.target.getAttribute('data-target'));
-                    const duration = 2000;
-                    const step = target / (duration / 16);
-                    let current = 0;
-                    const updateCounter = () => {
-                        current += step;
-                        if (current < target) {
-                            entry.target.textContent = Math.floor(current);
-                            requestAnimationFrame(updateCounter);
-                        } else {
-                            entry.target.textContent = target;
-                        }
-                    };
-                    updateCounter();
-                    counterObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        counters.forEach(counter => counterObserver.observe(counter));
+        <div class="card pad">
+          <h3>Entregables concretos</h3>
+          <ul>
+            <li>Documento de alcance y arquitectura.</li>
+            <li>Repositorio de fuentes y criterios de validación.</li>
+            <li>Demo funcional (búsqueda + respuestas con evidencia).</li>
+            <li>Reporte de hallazgos (eficiencia / cumplimiento / riesgos).</li>
+            <li>Plan de escalamiento y costos estimados.</li>
+          </ul>
+        </div>
+      </div>
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+      <div class="btns" style="margin-top:16px">
+        <a class="btn primary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Agendar reunión (15 min)</a>
+        <a class="btn secondary" href="#contacto">Solicitar demo técnica</a>
+      </div>
+    </div>
+  </section>
 
-        // Navbar background
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(5, 5, 5, 0.95)';
-                nav.style.backdropFilter = 'blur(20px)';
-            } else {
-                nav.style.background = 'rgba(10, 10, 10, 0.7)';
-                nav.style.backdropFilter = 'blur(12px)';
-            }
-        });
+  <!-- PARTNERS -->
+  <section id="partners">
+    <div class="wrap">
+      <h2>Partners técnicos: llamados a alianza</h2>
+      <p class="muted">Co‑delivery para implementar rápido, seguro y a escala nacional.</p>
 
-        // Parallax floating elements
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.float-element');
-            parallaxElements.forEach((el, index) => {
-                const speed = 0.5 + (index * 0.1);
-                el.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });
+      <div class="grid cols3" style="margin-top:16px">
+        <div class="card pad">
+          <h3>Integradores</h3>
+          <ul>
+            <li>GovTech / sector público</li>
+            <li>Gestión documental / ECM</li>
+            <li>Interoperabilidad y APIs</li>
+          </ul>
+        </div>
+        <div class="card pad">
+          <h3>Infraestructura & Seguridad</h3>
+          <ul>
+            <li>On‑prem / híbrido</li>
+            <li>IAM / Zero Trust</li>
+            <li>Auditoría, logs y SIEM</li>
+          </ul>
+        </div>
+        <div class="card pad">
+          <h3>Data & AI</h3>
+          <ul>
+            <li>RAG, evaluación, MLOps</li>
+            <li>Calidad de datos y gobernanza</li>
+            <li>Observabilidad y performance</li>
+          </ul>
+        </div>
+      </div>
 
-        // WEB3FORMS FORM HANDLING
-        const contactForm = document.getElementById('contactForm');
-        const formMessage = document.getElementById('formMessage');
+      <div class="card pad" style="margin-top:18px">
+        <h3>Formulario para partners</h3>
+        <p class="muted">
+          Enviá tu perfil y área de cobertura. Respondemos con una llamada de encuadre y propuesta de colaboración.
+        </p>
+        <div class="btns">
+          <a class="btn primary" href="https://forms.gle/AEaB45KMpDdHSH439" target="_blank" rel="noopener">Quiero ser partner</a>
+          <a class="btn ghost" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Agendar llamada</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        function showMessage(text, type) {
-            formMessage.textContent = text;
-            formMessage.className = `form-message ${type}`;
-            formMessage.classList.add('show');
-            setTimeout(() => {
-                formMessage.classList.remove('show');
-            }, 4000);
-        }
+  <!-- PRENSA / INVERSORES -->
+  <section id="prensa">
+    <div class="wrap">
+      <h2>Prensa e inversores</h2>
+      <p class="muted">Acceso rápido a materiales y contacto directo.</p>
 
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+      <div class="grid cols2" style="margin-top:16px">
+        <div class="card pad">
+          <h3>Kit de Prensa (descarga)</h3>
+          <ul>
+            <li>Boilerplate institucional</li>
+            <li>Logos (SVG/PNG) y guía</li>
+            <li>Fotos y bio de dirección</li>
+            <li>Materiales de producto (si aplica)</li>
+            <li>Contacto y disponibilidad</li>
+          </ul>
+          <div class="btns">
+            <a class="btn secondary" href="https://drive.google.com/file/d/1oDoZEul-mR4oC8OPXX4KVqVEZy5tc4Tc/view?usp=drive_link" target="_blank" rel="noopener">Descargar Press Kit</a>
+            <a class="btn ghost" href="#contacto">Contacto de prensa</a>
+          </div>
+        </div>
 
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-            submitBtn.disabled = true;
+        <div class="card pad">
+          <h3>Para inversores (resumen)</h3>
+          <p class="muted">
+            AXON construye infraestructura de IA local para eficiencia estatal y compliance, iniciando en Uruguay con foco en trazabilidad y soberanía de datos.
+          </p>
+          <ul>
+            <li>Pilotos con entregables y evidencia para escalar.</li>
+            <li>Arquitectura on‑prem/híbrida según requerimientos.</li>
+            <li>Espacio natural para alianzas e integraciones.</li>
+          </ul>
+          <div class="btns">
+            <a class="btn primary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Agendar llamada</a>
+            <a class="btn ghost" href="mailto:axonnintelligence@gmail.com">Escribir a inversión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            try {
-                const formData = new FormData(this);
-                const response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    body: formData
-                });
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="wrap">
+      <h2>Contacto</h2>
+      <p class="muted">Elegí el canal según tu objetivo. Respuesta estimada: 24–48 h hábiles.</p>
 
-                const data = await response.json();
+      <div class="grid cols3" style="margin-top:16px">
+        <div class="card pad">
+          <h3>Reunión (dirección)</h3>
+          <p class="muted">Para instituciones, empresas, tomadores de decisión y coordinación inicial.</p>
+          <div class="btns">
+            <a class="btn primary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Agendar en Calendly</a>
+          </div>
+        </div>
 
-                if (response.ok && data.success) {
-                    showMessage('✓ Comunicación oficial enviada. Nuestro equipo responderá a la brevedad.', 'success');
-                    this.reset();
-                } else {
-                    showMessage('✗ Error al enviar. Por favor, intente nuevamente.', 'error');
-                }
-            } catch (error) {
-                showMessage('✗ Error de conexión. Verifique su conexión e intente nuevamente.', 'error');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    </script>
+        <div class="card pad">
+          <h3>Demo técnica (IT)</h3>
+          <p class="muted">Arquitectura, seguridad, RAG, operación y despliegue.</p>
+          <div class="btns">
+            <a class="btn secondary" href="https://calendly.com/axonintelligence" target="_blank" rel="noopener">Agendar en Calendly</a>
+          </div>
+          <p class="small" style="margin-top:10px">
+            (Sugerencia: crear en Calendly un evento “Demo técnica (30 min)” para que el copy coincida 1:1.)
+          </p>
+        </div>
+
+        <div class="card pad">
+          <h3>Material institucional</h3>
+          <p class="muted">Dossier y press kit listos para compartir.</p>
+          <div class="btns">
+            <a class="btn ghost" href="https://drive.google.com/file/d/162tJqvFZf0T2kx3X9X3msDMlava1FElK/view?usp=sharing" target="_blank" rel="noopener">Dossier (PDF)</a>
+            <a class="btn ghost" href="https://drive.google.com/file/d/1oDoZEul-mR4oC8OPXX4KVqVEZy5tc4Tc/view?usp=drive_link" target="_blank" rel="noopener">Press Kit</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card pad" style="margin-top:18px">
+        <h3>Formulario general</h3>
+        <p class="muted">Para consultas institucionales, prensa o coordinación inicial.</p>
+        <div class="btns">
+          <a class="btn secondary" href="https://forms.gle/czsEAp3XsCKT2pqL9" target="_blank" rel="noopener">Abrir formulario</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="hr"></div>
+      <p class="small" style="margin:0">
+        © <span id="y"></span> AXON Intelligence — Rivera, Uruguay · Operaciones nacionales.
+        <span style="opacity:.6">|</span>
+        <a href="#inicio" class="small">Volver arriba</a>
+      </p>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
