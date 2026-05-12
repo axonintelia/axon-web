@@ -3,76 +3,635 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXON Intelligence | Soberanía Digital Uruguay</title>
+    <title>AXON Intelligence — Sistemas de Gestión para PYMEs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }
-        .neon-border { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
-        .neon-text { color: #00ff41; text-shadow: 0 0 5px rgba(0, 255, 65, 0.5); }
-        .bg-gradient { background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); }
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .tab-active { border-bottom: 3px solid #e94560; color: #e94560; }
+        .progress-bar { transition: width 1s ease-in-out; }
     </style>
 </head>
-<body class="bg-gradient">
+<body class="bg-gray-50">
 
-    <nav class="flex justify-between items-center p-6 border-b border-white/10">
-        <div class="text-2xl font-900 tracking-tighter neon-text">AXON <span class="text-white">INTELLIGENCE</span></div>
-        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-semibold">
-            <a href="#vision" class="hover:neon-text transition">Visión</a>
-            <a href="#servicios" class="hover:neon-text transition">Servicios</a>
-            <a href="#contacto" class="hover:neon-text transition">Contacto</a>
+    <!-- NAV -->
+    <nav class="gradient-bg text-white fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-[#e94560] rounded-lg flex items-center justify-center font-bold text-white">A</div>
+                    <span class="font-bold text-xl tracking-tight">AXON Intelligence</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#servicios" class="hover:text-[#e94560] transition">Servicios</a>
+                    <a href="#demo" class="hover:text-[#e94560] transition">Demo Interactiva</a>
+                    <a href="#calculadora" class="hover:text-[#e94560] transition">Calculadora</a>
+                    <a href="#testimonios" class="hover:text-[#e94560] transition">Casos</a>
+                </div>
+                <a href="#contacto" class="bg-[#e94560] px-6 py-2 rounded-full font-medium hover:bg-red-600 transition">
+                    Diagnóstico Gratis
+                </a>
+            </div>
         </div>
     </nav>
 
-    <header class="py-24 px-6 text-center max-w-5xl mx-auto">
-        <h1 class="text-5xl md:text-7xl font-900 leading-tight mb-6">
-            Soberanía Digital para un <br> <span class="neon-text">Uruguay Eficiente</span>
-        </h1>
-        <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-            Impulsamos el proyecto <span class="text-white font-bold">#UruguayPapelCero</span>. Inteligencia Artificial local diseñada para auditar la gestión pública y optimizar el Estado.
-        </p>
-        <div class="flex flex-col md:flex-row justify-center gap-4">
-            <a href="mailto:axonnintelligence@gmail.com" class="bg-[#00ff41] text-black font-bold py-4 px-8 rounded-sm hover:bg-[#00cc33] transition uppercase tracking-tighter">
-                Solicitar Demo Técnica
-            </a>
-            <a href="#" class="border border-white/20 hover:border-[#00ff41] py-4 px-8 rounded-sm transition uppercase tracking-tighter">
-                Dossier Institucional
-            </a>
-        </div>
-    </header>
-
-    <section id="servicios" class="py-20 px-6 bg-white/5">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
-            <div class="p-8 border-l-2 border-[#00ff41] bg-black/40">
-                <h3 class="text-xl font-bold mb-4 neon-text">Auditoría Algorítmica</h3>
-                <p class="text-gray-400">Procesamiento de normativa nacional (TOCAF, Leyes, Decretos) para detectar cuellos de botella burocráticos en tiempo real.</p>
+    <!-- HERO -->
+    <section class="gradient-bg text-white pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="inline-block bg-[#e94560]/20 text-[#e94560] px-4 py-1 rounded-full text-sm font-medium mb-6">
+                    Para PYMEs de Uruguay y la región
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                    Deja de perder tiempo en <span class="text-[#e94560]">Excel y cuadernos</span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-8">
+                    Sistemas de gestión integrados que unifican stock, clientes y facturación en una sola plataforma. Entrega en semanas, no en meses.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="scrollToDemo()" class="bg-[#e94560] px-8 py-4 rounded-lg font-bold text-lg hover:bg-red-600 transition flex items-center justify-center gap-2">
+                        Probar Demo Interactiva
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </button>
+                    <button onclick="scrollToCalculadora()" class="border-2 border-white/30 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition">
+                        Calcular mi ahorro
+                    </button>
+                </div>
+                <div class="mt-8 flex items-center gap-4 text-sm text-gray-400">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-[#1a1a2e]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#1a1a2e]"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-[#1a1a2e]"></div>
+                    </div>
+                    <span>+50 PYMEs ya operan con AXON</span>
+                </div>
             </div>
-            <div class="p-8 border-l-2 border-[#00ff41] bg-black/40">
-                <h3 class="text-xl font-bold mb-4 neon-text">Soberanía de Datos</h3>
-                <p class="text-gray-400">Infraestructura local. Procesamos la información del Estado en suelo uruguayo, sin depender de nubes extranjeras.</p>
-            </div>
-            <div class="p-8 border-l-2 border-[#00ff41] bg-black/40">
-                <h3 class="text-xl font-bold mb-4 neon-text">Transparencia 4.0</h3>
-                <p class="text-gray-400">Transformamos archivos físicos en datos accionables para una gestión pública íntegra, moderna y rápida.</p>
+            <div class="relative">
+                <div class="glass rounded-2xl p-6 animate-float">
+                    <div class="bg-white rounded-xl p-4 text-gray-800">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-bold text-[#1a1a2e]">Dashboard AXON</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">En vivo</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="text-xs text-gray-500">Ventas Hoy</p>
+                                <p class="text-xl font-bold text-[#0f3460]">$45.200</p>
+                            </div>
+                            <div class="bg-red-50 p-3 rounded-lg">
+                                <p class="text-xs text-gray-500">Stock Bajo</p>
+                                <p class="text-xl font-bold text-red-600">3 items</p>
+                            </div>
+                        </div>
+                        <div class="h-32">
+                            <canvas id="heroChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 text-center px-6">
-        <h2 class="text-3xl md:text-5xl font-light italic text-gray-300">
-            "La eficiencia no es un objetivo, es un <span class="text-white font-bold">derecho del ciudadano</span>."
-        </h2>
-        <p class="mt-6 text-[#00ff41] uppercase tracking-[0.3em] font-bold text-sm">Desde Rivera para todo el país</p>
+    <!-- SERVICIOS -->
+    <section id="servicios" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-[#1a1a2e] mb-4">¿Qué resuelve AXON?</h2>
+                <p class="text-xl text-gray-600">Tres módulos que se integran o funcionan solos</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border-t-4 border-[#0f3460]">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-[#0f3460]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1a1a2e] mb-3">Control de Stock</h3>
+                    <p class="text-gray-600 mb-4">Alertas automáticas de reposición, historial de movimientos, valoración de inventario en tiempo real.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">✓ Alertas por email y WhatsApp</li>
+                        <li class="flex items-center gap-2">✓ Códigos de barras integrados</li>
+                        <li class="flex items-center gap-2">✓ Múltiples depósitos</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border-t-4 border-[#e94560]">
+                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-[#e94560]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1a1a2e] mb-3">Facturación Electrónica</h3>
+                    <p class="text-gray-600 mb-4">Generá facturas en 30 segundos, integración con DGI Uruguay, control de cobranzas automático.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">✓ e-Ticket y e-Factura</li>
+                        <li class="flex items-center gap-2">✓ Envío automático por email</li>
+                        <li class="flex items-center gap-2">✓ Reporte de deudores</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border-t-4 border-green-500">
+                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#1a1a2e] mb-3">Gestión de Clientes</h3>
+                    <p class="text-gray-600 mb-4">Historial completo de compras, segmentación automática, recordatorios de seguimiento y fidelización.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">✓ CRM integrado</li>
+                        <li class="flex items-center gap-2">✓ Importación masiva</li>
+                        <li class="flex items-center gap-2">✓ Estadísticas por cliente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <footer id="contacto" class="p-12 border-t border-white/10 text-center text-gray-500">
-        <p class="mb-4">© 2026 AXON Intelligence | Montevideo - Rivera, Uruguay</p>
-        <div class="flex justify-center space-x-6 text-sm">
-            <a href="#" class="hover:text-white">LinkedIn</a>
-            <a href="#" class="hover:text-white">X (Twitter)</a>
-            <a href="#" class="hover:text-white">Instagram</a>
+    <!-- DEMO INTERACTIVA -->
+    <section id="demo" class="py-20 px-4 bg-[#1a1a2e] text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Probá el sistema ahora</h2>
+                <p class="text-xl text-gray-400">Interactuá con el demo. No es simulación, funciona.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex justify-center mb-8 space-x-1 bg-white/5 rounded-lg p-1 inline-flex mx-auto w-full md:w-auto">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active px-6 py-3 rounded-md font-medium transition">Dashboard</button>
+                <button onclick="switchTab('stock')" id="tab-stock" class="px-6 py-3 rounded-md font-medium text-gray-400 hover:text-white transition">Stock</button>
+                <button onclick="switchTab('factura')" id="tab-factura" class="px-6 py-3 rounded-md font-medium text-gray-400 hover:text-white transition">Facturar</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="content-dashboard" class="glass rounded-2xl p-6 md:p-8">
+                <div class="grid md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <p class="text-sm text-gray-400">Ventas del Mes</p>
+                        <p class="text-2xl font-bold">$125.400</p>
+                        <p class="text-xs text-green-400">+28% vs anterior</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <p class="text-sm text-gray-400">Productos</p>
+                        <p class="text-2xl font-bold">156</p>
+                        <p class="text-xs text-yellow-400">3 con stock bajo</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <p class="text-sm text-gray-400">Clientes</p>
+                        <p class="text-2xl font-bold">89</p>
+                        <p class="text-xs text-green-400">12 nuevos</p>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-4">
+                        <p class="text-sm text-gray-400">Facturas Pendientes</p>
+                        <p class="text-2xl font-bold">$23.500</p>
+                        <p class="text-xs text-red-400">5 vencidas</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 rounded-xl p-4">
+                        <h4 class="font-medium mb-4">Ventas por Semana</h4>
+                        <canvas id="ventasChart"></canvas>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-4">
+                        <h4 class="font-medium mb-4">Productos más Vendidos</h4>
+                        <canvas id="productosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stock Tab -->
+            <div id="content-stock" class="glass rounded-2xl p-6 md:p-8 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">Inventario en Tiempo Real</h3>
+                    <button onclick="agregarProductoDemo()" class="bg-[#e94560] px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition">+ Agregar Producto</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="border-b border-white/20">
+                            <tr>
+                                <th class="text-left py-3 px-4">Producto</th>
+                                <th class="text-left py-3 px-4">Categoría</th>
+                                <th class="text-right py-3 px-4">Precio</th>
+                                <th class="text-right py-3 px-4">Stock</th>
+                                <th class="text-center py-3 px-4">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-stock">
+                            <tr class="border-b border-white/10 hover:bg-white/5">
+                                <td class="py-3 px-4">Harina 0000</td>
+                                <td class="py-3 px-4 text-gray-400">Alimentos</td>
+                                <td class="py-3 px-4 text-right">$45</td>
+                                <td class="py-3 px-4 text-right">150</td>
+                                <td class="py-3 px-4 text-center"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">OK</span></td>
+                            </tr>
+                            <tr class="border-b border-white/10 hover:bg-white/5">
+                                <td class="py-3 px-4">Aceite de girasol 900cc</td>
+                                <td class="py-3 px-4 text-gray-400">Alimentos</td>
+                                <td class="py-3 px-4 text-right">$95</td>
+                                <td class="py-3 px-4 text-right font-bold text-red-400">8</td>
+                                <td class="py-3 px-4 text-center"><span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs">¡Stock bajo!</span></td>
+                            </tr>
+                            <tr class="border-b border-white/10 hover:bg-white/5">
+                                <td class="py-3 px-4">Detergente líquido 1L</td>
+                                <td class="py-3 px-4 text-gray-400">Limpieza</td>
+                                <td class="py-3 px-4 text-right">$120</td>
+                                <td class="py-3 px-4 text-right">23</td>
+                                <td class="py-3 px-4 text-center"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">Cerca</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Factura Tab -->
+            <div id="content-factura" class="glass rounded-2xl p-6 md:p-8 hidden">
+                <h3 class="text-xl font-bold mb-6">Nueva Factura</h3>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Cliente</label>
+                        <select id="cliente-select" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white">
+                            <option value="">Seleccionar cliente...</option>
+                            <option value="Distribuidora del Sur">Distribuidora del Sur S.A.</option>
+                            <option value="Farmacia Modelo">Farmacia Modelo</option>
+                            <option value="Constructora del Este">Constructora del Este</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Fecha</label>
+                        <input type="date" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white" value="2026-05-12">
+                    </div>
+                </div>
+                <div id="items-factura" class="space-y-3 mb-6">
+                    <div class="flex gap-3 items-end">
+                        <div class="flex-1">
+                            <label class="block text-sm text-gray-400 mb-2">Producto</label>
+                            <select onchange="actualizarPrecio(this)" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white producto-select">
+                                <option value="">Seleccionar...</option>
+                                <option value="45">Harina 0000 - $45</option>
+                                <option value="95">Aceite girasol - $95</option>
+                                <option value="120">Detergente 1L - $120</option>
+                                <option value="180">Yerba mate 1kg - $180</option>
+                            </select>
+                        </div>
+                        <div class="w-24">
+                            <label class="block text-sm text-gray-400 mb-2">Cant.</label>
+                            <input type="number" min="1" value="1" onchange="calcularTotal()" class="cantidad-input w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-center">
+                        </div>
+                        <div class="w-32">
+                            <label class="block text-sm text-gray-400 mb-2">Subtotal</label>
+                            <input type="text" readonly class="subtotal-input w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-400 text-center" value="$0">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="agregarItem()" class="text-[#e94560] hover:text-red-400 text-sm mb-6">+ Agregar otro producto</button>
+                <div class="border-t border-white/20 pt-6 flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-400">Total</p>
+                        <p id="total-factura" class="text-4xl font-bold">$0</p>
+                    </div>
+                    <button onclick="emitirFactura()" class="bg-[#e94560] px-8 py-4 rounded-lg font-bold hover:bg-red-600 transition">
+                        Emitir Factura
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALCULADORA -->
+    <section id="calculadora" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#1a1a2e] mb-4">¿Cuánto te cuesta hoy la ineficiencia?</h2>
+                <p class="text-xl text-gray-600">Calculá tu ahorro mensual con AXON</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Horas semanales en tareas manuales (stock, facturas, Excel)</label>
+                        <input type="range" id="horas" min="5" max="40" value="15" oninput="updateCalculadora()" class="w-full accent-[#e94560]">
+                        <div class="flex justify-between text-sm text-gray-500 mt-1">
+                            <span>5h</span>
+                            <span id="horas-valor" class="font-bold text-[#e94560]">15h</span>
+                            <span>40h</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Valor hora de empleado administrativo ($)</label>
+                        <input type="number" id="valor-hora" value="300" oninput="updateCalculadora()" class="w-full border rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Errores mensuales por carga manual (facturas duplicadas, stock mal)</label>
+                        <input type="range" id="errores" min="0" max="20" value="5" oninput="updateCalculadora()" class="w-full accent-[#e94560]">
+                        <div class="flex justify-between text-sm text-gray-500 mt-1">
+                            <span>0</span>
+                            <span id="errores-valor" class="font-bold text-[#e94560]">5</span>
+                            <span>20</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Costo promedio por error ($)</label>
+                        <input type="number" id="costo-error" value="1500" oninput="updateCalculadora()" class="w-full border rounded-lg px-4 py-2">
+                    </div>
+                </div>
+                <div class="bg-[#1a1a2e] rounded-xl p-6 text-white text-center">
+                    <p class="text-lg mb-2">Costo mensual estimado de ineficiencia</p>
+                    <p id="costo-total" class="text-5xl font-bold text-[#e94560] mb-4">$27.000</p>
+                    <p class="text-gray-400">Inversión en AXON Profesional: <span class="text-white font-bold">$15.000</span> (se recupera en <span id="meses-recupero" class="text-white font-bold">0.6</span> meses)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonios" class="py-20 px-4 bg-gray-100">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-[#1a1a2e] mb-4">Casos reales</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Pasamos de tardar 2 días en saber qué stock teníamos a verlo en tiempo real. El sistema se pagó solo en 3 meses."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-[#0f3460] rounded-full flex items-center justify-center text-white font-bold">M</div>
+                        <div>
+                            <p class="font-medium">María González</p>
+                            <p class="text-sm text-gray-500">Directora, Distribuidora del Sur</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">"La facturación electrónica integrada nos ahorró contratar a una persona solo para eso. Inversión inteligente."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-[#e94560] rounded-full flex items-center justify-center text-white font-bold">R</div>
+                        <div>
+                            <p class="font-medium">Rodrigo Silva</p>
+                            <p class="text-sm text-gray-500">Gerente, Farmacia Modelo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Empezamos con el módulo de stock y a los 2 meses agregamos facturación. Escalar fue natural."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">C</div>
+                        <div>
+                            <p class="font-medium">Carlos Méndez</p>
+                            <p class="text-sm text-gray-500">CEO, Constructora del Este</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="contacto" class="gradient-bg text-white py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para dejar de perder tiempo?</h2>
+            <p class="text-xl text-gray-300 mb-8">Auditoría gratuita de 30 minutos. Sin compromiso, con informe escrito.</p>
+            <form class="max-w-md mx-auto space-y-4" onsubmit="event.preventDefault(); alert('¡Gracias! Te contactamos en 24 horas.');">
+                <input type="text" placeholder="Nombre" required class="w-full px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#e94560]">
+                <input type="email" placeholder="Email" required class="w-full px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#e94560]">
+                <input type="tel" placeholder="WhatsApp" required class="w-full px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#e94560]">
+                <select class="w-full px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-[#e94560]">
+                    <option value="">¿Qué necesitás resolver?</option>
+                    <option value="stock">Control de stock</option>
+                    <option value="facturacion">Facturación electrónica</option>
+                    <option value="clientes">Gestión de clientes</option>
+                    <option value="todo">Todo integrado</option>
+                </select>
+                <button type="submit" class="w-full bg-[#e94560] px-8 py-4 rounded-lg font-bold text-lg hover:bg-red-600 transition">
+                    Solicitar diagnóstico gratuito
+                </button>
+            </form>
+            <p class="text-sm text-gray-400 mt-6">Respuesta en menos de 24 horas. Montevideo y toda la región.</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#0f3460] text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-[#e94560] rounded-lg flex items-center justify-center font-bold">A</div>
+                    <span class="font-bold text-xl">AXON Intelligence</span>
+                </div>
+                <p class="text-gray-400 text-sm">Sistemas de gestión para PYMEs que crecen. Uruguay y región.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Servicios</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li>Control de Stock</li>
+                    <li>Facturación Electrónica</li>
+                    <li>Gestión de Clientes</li>
+                    <li>Desarrollo a Medida</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Contacto</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li>Montevideo, Uruguay</li>
+                    <li>WhatsApp: [número]</li>
+                    <li>Email: [email]</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Legal</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li>Términos de servicio</li>
+                    <li>Privacidad</li>
+                </ul>
+            </div>
         </div>
     </footer>
 
+    <!-- SCRIPTS -->
+    <script>
+        // Hero chart
+        const ctxHero = document.getElementById('heroChart').getContext('2d');
+        new Chart(ctxHero, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'],
+                datasets: [{
+                    data: [32000, 28000, 45000, 38000, 45200],
+                    borderColor: '#e94560',
+                    backgroundColor: 'rgba(233, 69, 96, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+
+        // Ventas chart
+        const ctxVentas = document.getElementById('ventasChart').getContext('2d');
+        new Chart(ctxVentas, {
+            type: 'bar',
+            data: {
+                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+                datasets: [{
+                    label: 'Ventas',
+                    data: [28000, 35000, 42000, 38000],
+                    backgroundColor: '#0f3460'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#9ca3af' } },
+                    x: { ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+
+        // Productos chart
+        const ctxProductos = document.getElementById('productosChart').getContext('2d');
+        new Chart(ctxProductos, {
+            type: 'doughnut',
+            data: {
+                labels: ['Harina', 'Aceite', 'Detergente', 'Yerba'],
+                datasets: [{
+                    data: [35, 25, 20, 20],
+                    backgroundColor: ['#0f3460', '#e94560', '#10b981', '#f59e0b']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af' } } }
+            }
+        });
+
+        // Tab switching
+        function switchTab(tab) {
+            ['dashboard', 'stock', 'factura'].forEach(t => {
+                document.getElementById('content-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).classList.remove('tab-active');
+                document.getElementById('tab-' + t).classList.add('text-gray-400');
+            });
+            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('tab-active');
+            document.getElementById('tab-' + tab).classList.remove('text-gray-400');
+        }
+
+        // Calculadora
+        function updateCalculadora() {
+            const horas = document.getElementById('horas').value;
+            const valorHora = document.getElementById('valor-hora').value;
+            const errores = document.getElementById('errores').value;
+            const costoError = document.getElementById('costo-error').value;
+
+            document.getElementById('horas-valor').textContent = horas + 'h';
+            document.getElementById('errores-valor').textContent = errores;
+
+            const costoMensual = (horas * 4 * valorHora) + (errores * costoError);
+            document.getElementById('costo-total').textContent = '$' + costoMensual.toLocaleString();
+
+            const mesesRecupero = (15000 / costoMensual).toFixed(1);
+            document.getElementById('meses-recupero').textContent = mesesRecupero;
+        }
+
+        // Factura interactiva
+        function actualizarPrecio(select) {
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            let total = 0;
+            const filas = document.querySelectorAll('#items-factura > div');
+            filas.forEach(fila => {
+                const select = fila.querySelector('.producto-select');
+                const cantidad = fila.querySelector('.cantidad-input');
+                const subtotal = fila.querySelector('.subtotal-input');
+                if (select.value && cantidad.value) {
+                    const sub = select.value * cantidad.value;
+                    subtotal.value = '$' + sub.toLocaleString();
+                    total += sub;
+                }
+            });
+            document.getElementById('total-factura').textContent = '$' + total.toLocaleString();
+        }
+
+        function agregarItem() {
+            const container = document.getElementById('items-factura');
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'flex gap-3 items-end';
+            nuevoItem.innerHTML = `
+                <div class="flex-1">
+                    <select onchange="actualizarPrecio(this)" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white producto-select">
+                        <option value="">Seleccionar...</option>
+                        <option value="45">Harina 0000 - $45</option>
+                        <option value="95">Aceite girasol - $95</option>
+                        <option value="120">Detergente 1L - $120</option>
+                        <option value="180">Yerba mate 1kg - $180</option>
+                    </select>
+                </div>
+                <div class="w-24">
+                    <input type="number" min="1" value="1" onchange="calcularTotal()" class="cantidad-input w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-center">
+                </div>
+                <div class="w-32">
+                    <input type="text" readonly class="subtotal-input w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-gray-400 text-center" value="$0">
+                </div>
+            `;
+            container.appendChild(nuevoItem);
+        }
+
+        function emitirFactura() {
+            const cliente = document.getElementById('cliente-select').value;
+            const total = document.getElementById('total-factura').textContent;
+            if (!cliente) {
+                alert('Seleccioná un cliente primero');
+                return;
+            }
+            if (total === '$0') {
+                alert('Agregá al menos un producto');
+                return;
+            }
+            alert('¡Factura emitida!\n\nCliente: ' + cliente + '\nTotal: ' + total + '\n\nEn un sistema real, esto generaría el PDF y enviaría por email.');
+        }
+
+        function agregarProductoDemo() {
+            const tabla = document.getElementById('tabla-stock');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.className = 'border-b border-white/10 hover:bg-white/5 animate-pulse';
+            nuevaFila.innerHTML = `
+                <td class="py-3 px-4">Nuevo Producto</td>
+                <td class="py-3 px-4 text-gray-400">General</td>
+                <td class="py-3 px-4 text-right">$100</td>
+                <td class="py-3 px-4 text-right">50</td>
+                <td class="py-3 px-4 text-center"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">OK</span></td>
+            `;
+            tabla.appendChild(nuevaFila);
+            setTimeout(() => nuevaFila.classList.remove('animate-pulse'), 1000);
+        }
+
+        function scrollToDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToCalculadora() {
+            document.getElementById('calculadora').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Inicializar calculadora
+        updateCalculadora();
+    </script>
 </body>
 </html>
